@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/oled_background"
+    tools:context=".EditVehicleActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="Edit Vehicle Details"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editVehicleName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Vehicle Name (e.g., Daily Driver)"
+            android:textColorHint="@color/text_secondary"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/text_secondary"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/editInsurance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Insurance Expiry (DD/MM/YYYY)"
+            android:textColorHint="@color/text_secondary"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/text_secondary"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/editService"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Service Due Date (DD/MM/YYYY)"
+            android:textColorHint="@color/text_secondary"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/text_secondary"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/editPuc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="PUC Expiry (DD/MM/YYYY)"
+            android:textColorHint="@color/text_secondary"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/text_secondary"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/editRc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:hint="RC Expiry (DD/MM/YYYY)"
+            android:textColorHint="@color/text_secondary"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/text_secondary"
+            android:inputType="date" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Card Accent Color"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:scrollbars="none"
+            android:clipToPadding="false"
+            android:paddingHorizontal="4dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="8dp">
+
+                <androidx.cardview.widget.CardView android:id="@+id/c1" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#EF5350" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c2" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#FF1744" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c3" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#F48FB1" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c4" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#7E57C2" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c5" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#42A5F5" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c6" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#00E5FF" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c7" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#66BB6A" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c8" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#FFEE58" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c9" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#FF9800" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c10" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#FFFFFF" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <Button
+            android:id="@+id/btnUpdateVehicle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:padding="16dp"
+            android:text="Update Vehicle"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+    </LinearLayout>
+</ScrollView>

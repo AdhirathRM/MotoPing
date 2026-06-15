@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="10dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="#161616"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <!-- Outer layout to hold the accent line -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Premium Accent Bar on the Left Edge -->
+        <View
+            android:id="@+id/accentBar"
+            android:layout_width="4dp"
+            android:layout_height="0dp"
+            android:background="#EF5350"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <!-- Main Content Container -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            app:layout_constraintStart_toEndOf="@id/accentBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <!-- Top Row: Title & Edit Icon -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:id="@+id/textVehicleName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vehicle Name"
+                    android:textSize="22sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="#FFFFFF" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@android:drawable/ic_menu_edit"
+                    app:tint="#424242"
+                    android:contentDescription="Edit Vehicle" />
+            </RelativeLayout>
+
+            <!-- Grid Row 1: Insurance & Service -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="INSURANCE"
+                        android:textSize="10sp"
+                        android:letterSpacing="0.1"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="#757575" />
+
+                    <TextView
+                        android:id="@+id/textInsurance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12/12/2024"
+                        android:layout_marginTop="4dp"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="#E0E0E0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="NEXT SERVICE"
+                        android:textSize="10sp"
+                        android:letterSpacing="0.1"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="#757575" />
+
+                    <TextView
+                        android:id="@+id/textService"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12/12/2024"
+                        android:layout_marginTop="4dp"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="#E0E0E0" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Grid Row 2: PUC & RC -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PUC VALIDITY"
+                        android:textSize="10sp"
+                        android:letterSpacing="0.1"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="#757575" />
+
+                    <TextView
+                        android:id="@+id/textPuc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12/12/2024"
+                        android:layout_marginTop="4dp"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="#E0E0E0" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="RC EXPIRY"
+                        android:textSize="10sp"
+                        android:letterSpacing="0.1"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="#757575" />
+
+                    <TextView
+                        android:id="@+id/textRc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12/12/2024"
+                        android:layout_marginTop="4dp"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="#E0E0E0" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

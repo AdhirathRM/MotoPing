@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="oled_background">#000000</color>
+    <color name="card_background">#121212</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#7A7A7A</color>
+    <color name="accent_monochrome">#FFFFFF</color>
+</resources>
