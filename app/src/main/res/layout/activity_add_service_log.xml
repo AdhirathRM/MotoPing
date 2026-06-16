@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/oled_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Premium Add Log Heading -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="32dp">
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="match_parent"
+                android:background="#00E676" /> <!-- Green Accent for Maintenance -->
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SERVICE RECORD"
+                    android:textColor="@color/white"
+                    android:textSize="28sp"
+                    android:fontFamily="sans-serif-black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LOG MAINTENANCE DETAILS"
+                    android:textColor="#7A7A7A"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-black"
+                    android:letterSpacing="0.1"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Title Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SERVICE TITLE"
+            android:textColor="#7A7A7A"
+            android:textSize="10sp"
+            android:fontFamily="sans-serif-black"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="4dp"/>
+        <EditText
+            android:id="@+id/inputLogTitle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="e.g. Oil Change"
+            android:textColorHint="#4A4A4A"
+            android:textColor="@color/white"
+            android:background="#161616"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Date Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DATE PERFORMED"
+            android:textColor="#7A7A7A"
+            android:textSize="10sp"
+            android:fontFamily="sans-serif-black"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="4dp"/>
+        <EditText
+            android:id="@+id/inputLogDate"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="Tap to select date"
+            android:textColorHint="#4A4A4A"
+            android:textColor="@color/white"
+            android:background="#161616"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Cost Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TOTAL COST (₹)"
+            android:textColor="#7A7A7A"
+            android:textSize="10sp"
+            android:fontFamily="sans-serif-black"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="4dp"/>
+        <EditText
+            android:id="@+id/inputLogCost"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="0"
+            android:inputType="number"
+            android:textColorHint="#4A4A4A"
+            android:textColor="@color/white"
+            android:background="#161616"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Notes Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ADDITIONAL NOTES"
+            android:textColor="#7A7A7A"
+            android:textSize="10sp"
+            android:fontFamily="sans-serif-black"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="4dp"/>
+        <EditText
+            android:id="@+id/inputLogNotes"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:hint="Parts used, mechanic name, etc."
+            android:gravity="top|start"
+            android:textColorHint="#4A4A4A"
+            android:textColor="@color/white"
+            android:background="#161616"
+            android:padding="16dp"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- Spacer to push button to bottom if screen is tall -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnSaveLog"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="SAVE RECORD"
+            android:textColor="@color/white"
+            android:backgroundTint="#FF1744"
+            android:fontFamily="sans-serif-black"
+            android:layout_marginBottom="24dp"/>
+
+    </LinearLayout>
+</ScrollView>

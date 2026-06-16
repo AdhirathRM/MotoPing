@@ -13,14 +13,39 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <TextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="match_parent"
+                android:background="#2979FF" /> <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ADD VEHICLE"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:fontFamily="sans-serif-black"
-            android:layout_marginBottom="24dp"/>
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ADD VEHICLE"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:fontFamily="sans-serif-black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="REGISTER NEW MACHINE"
+                android:textColor="#7A7A7A"
+                android:textSize="10sp"
+                android:fontFamily="sans-serif-black"
+                android:letterSpacing="0.1"/>
+        </LinearLayout>
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

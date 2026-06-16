@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/oled_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Premium Vault Heading -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="24dp">
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="match_parent"
+                android:background="#FF1744" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VEHICLE VAULT"
+                    android:textColor="@color/white"
+                    android:textSize="28sp"
+                    android:fontFamily="sans-serif-black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DIGITAL COMMAND CENTER"
+                    android:textColor="#7A7A7A"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-black"
+                    android:letterSpacing="0.1"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#0A0A0A"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="24dp">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/vaultHealthRing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:indicatorColor="#00E676"
+                        app:indicatorSize="120dp"
+                        app:trackColor="#1A1A1A"
+                        app:trackThickness="8dp" />
+
+                    <ImageView
+                        android:id="@+id/vaultVehicleIcon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:src="@android:drawable/ic_dialog_info"
+                        app:tint="@color/white" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/vaultHealthScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="100%"
+                    android:textColor="#00E676"
+                    android:textSize="32sp" />
+
+                <TextView
+                    android:id="@+id/vaultVehicleName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Vehicle Name"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:cardBackgroundColor="#0A0A0A"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="COMPLIANCE DATES"
+                    android:textColor="#7A7A7A"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-black"
+                    android:letterSpacing="0.1"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView android:id="@+id/vaultInsurance" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Insurance: --/--/----" android:textColor="@color/white" android:fontFamily="monospace" android:layout_marginBottom="8dp"/>
+                <TextView android:id="@+id/vaultService" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Service: --/--/----" android:textColor="@color/white" android:fontFamily="monospace" android:layout_marginBottom="8dp"/>
+                <TextView android:id="@+id/vaultPuc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PUC: --/--/----" android:textColor="@color/white" android:fontFamily="monospace" android:layout_marginBottom="8dp"/>
+                <TextView android:id="@+id/vaultRc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="RC: --/--/----" android:textColor="@color/white" android:fontFamily="monospace"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnServiceHistory"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="VIEW SERVICE HISTORY"
+            android:textColor="@color/white"
+            android:backgroundTint="#242424"
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="0.05"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/btnEditVehicle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="EDIT VEHICLE DETAILS"
+            android:textColor="@color/white"
+            android:backgroundTint="#FF1744"
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="0.05"
+            android:layout_marginBottom="24dp"/>
+
+    </LinearLayout>
+</ScrollView>

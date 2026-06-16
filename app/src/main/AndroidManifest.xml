@@ -15,6 +15,9 @@
         android:theme="@style/Theme.MotoPing"
         tools:targetApi="31">
         <activity
+            android:name=".VehicleDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity
@@ -35,6 +38,8 @@
         <activity
             android:name=".EditVehicleActivity"
             android:exported="false" />
+        <activity android:name=".ServiceHistoryActivity" android:exported="false" />
+        <activity android:name=".AddServiceLogActivity" android:exported="false" />
     </application>
 
 </manifest>

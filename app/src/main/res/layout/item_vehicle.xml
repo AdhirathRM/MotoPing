@@ -3,191 +3,167 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="20dp"
-    android:layout_marginVertical="10dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
+    android:layout_marginBottom="16dp"
     app:cardBackgroundColor="#161616"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:paddingBottom="16dp">
 
         <View
             android:id="@+id/accentBar"
-            android:layout_width="4dp"
+            android:layout_width="6dp"
             android:layout_height="0dp"
-            android:background="#EF5350"
-            app:layout_constraintTop_toTopOf="parent"
+            android:background="#FF1744"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textVehicleName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="sans-serif-black"
+            android:text="ROYAL ENFIELD INTERCEPTOR"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@id/iconVehicleType"
+            app:layout_constraintStart_toEndOf="@id/accentBar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iconVehicleType"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@android:drawable/ic_dialog_info"
+            app:tint="#FF1744"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/gridContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
             app:layout_constraintStart_toEndOf="@id/accentBar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/textVehicleName">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp">
-
-                <LinearLayout
-                    android:id="@+id/iconContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true">
-
-                    <ImageView
-                        android:id="@+id/iconVehicleType"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="12dp"
-                        android:src="@drawable/ic_car" />
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@android:drawable/ic_menu_edit"
-                        app:tint="#424242"
-                        android:contentDescription="Edit Vehicle" />
-                </LinearLayout>
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textVehicleName"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/iconContainer"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="16dp"
-                    android:text="VEHICLE NAME"
-                    android:textSize="20sp"
-                    android:fontFamily="sans-serif-black"
-                    android:textAllCaps="true"
-                    android:letterSpacing="0.05"
-                    android:textColor="#FFFFFF"
-                    android:maxLines="2"
-                    android:ellipsize="end" />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false"
-                android:layout_marginBottom="20dp">
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                    android:text="INSURANCE"
+                    android:textColor="#7A7A7A"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.1"/>
+                <TextView
+                    android:id="@+id/textInsurance"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="INSURANCE"
-                        android:textSize="10sp"
-                        android:letterSpacing="0.1"
-                        android:fontFamily="sans-serif-medium"
-                        android:textColor="#757575" />
-                    <TextView
-                        android:id="@+id/textInsurance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="12/12/2024"
-                        android:layout_marginTop="4dp"
-                        android:textSize="16sp"
-                        android:textColor="#E0E0E0" />
-                </LinearLayout>
+                    android:layout_marginTop="4dp"
+                    android:text="20/06/2026"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif"/>
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="NEXT SERVICE"
-                        android:textSize="10sp"
-                        android:letterSpacing="0.1"
-                        android:fontFamily="sans-serif-medium"
-                        android:textColor="#757575" />
-                    <TextView
-                        android:id="@+id/textService"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="12/12/2024"
-                        android:layout_marginTop="4dp"
-                        android:textSize="16sp"
-                        android:textColor="#E0E0E0" />
-                </LinearLayout>
+                    android:layout_marginTop="20dp"
+                    android:text="PUC VALIDITY"
+                    android:textColor="#7A7A7A"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.1"/>
+                <TextView
+                    android:id="@+id/textPuc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="19/06/2026"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="PUC VALIDITY"
-                        android:textSize="10sp"
-                        android:letterSpacing="0.1"
-                        android:fontFamily="sans-serif-medium"
-                        android:textColor="#757575" />
-                    <TextView
-                        android:id="@+id/textPuc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="12/12/2024"
-                        android:layout_marginTop="4dp"
-                        android:textSize="16sp"
-                        android:textColor="#E0E0E0" />
-                </LinearLayout>
+                    android:text="NEXT SERVICE"
+                    android:textColor="#7A7A7A"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.1"/>
+                <TextView
+                    android:id="@+id/textService"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="19/06/2026"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif"/>
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="RC EXPIRY"
-                        android:textSize="10sp"
-                        android:letterSpacing="0.1"
-                        android:fontFamily="sans-serif-medium"
-                        android:textColor="#757575" />
-                    <TextView
-                        android:id="@+id/textRc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="12/12/2024"
-                        android:layout_marginTop="4dp"
-                        android:textSize="16sp"
-                        android:textColor="#E0E0E0" />
-                </LinearLayout>
+                    android:layout_marginTop="20dp"
+                    android:text="RC EXPIRY"
+                    android:textColor="#7A7A7A"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.1"/>
+                <TextView
+                    android:id="@+id/textRc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="26/06/2026"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif"/>
             </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textTapPrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="TAP TO EXPAND VAULT"
+            android:textColor="#4A4A4A"
+            android:textSize="10sp"
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="0.1"
+            app:layout_constraintStart_toEndOf="@id/accentBar"
+            app:layout_constraintTop_toBottomOf="@id/gridContainer" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

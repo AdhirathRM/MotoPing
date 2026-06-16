@@ -33,10 +33,12 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
         Vehicle vehicle = vehicleList.get(position);
 
         holder.textVehicleName.setText(vehicle.getName());
-        holder.textInsurance.setText(vehicle.getInsuranceExpiry());
-        holder.textService.setText(vehicle.getServiceDueDate());
-        holder.textPuc.setText(vehicle.getPucDueDate());
-        holder.textRc.setText(vehicle.getRcExpiry());
+
+        // Set raw dates into the grid. If missing, show placeholder.
+        holder.textInsurance.setText(vehicle.getInsuranceExpiry() != null && !vehicle.getInsuranceExpiry().isEmpty() ? vehicle.getInsuranceExpiry() : "--/--/----");
+        holder.textService.setText(vehicle.getServiceDueDate() != null && !vehicle.getServiceDueDate().isEmpty() ? vehicle.getServiceDueDate() : "--/--/----");
+        holder.textPuc.setText(vehicle.getPucDueDate() != null && !vehicle.getPucDueDate().isEmpty() ? vehicle.getPucDueDate() : "--/--/----");
+        holder.textRc.setText(vehicle.getRcExpiry() != null && !vehicle.getRcExpiry().isEmpty() ? vehicle.getRcExpiry() : "--/--/----");
 
         String type = vehicle.getType();
         if (type != null) {
@@ -55,9 +57,10 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
             holder.iconVehicleType.setColorFilter(cardColor);
         }
 
+        // Clicking the card opens the full Digital Vault
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), EditVehicleActivity.class);
-            intent.putExtra("ID", vehicle.getId()); // ID is now safely a String
+            Intent intent = new Intent(v.getContext(), VehicleDetailActivity.class);
+            intent.putExtra("ID", vehicle.getId());
             intent.putExtra("NAME", vehicle.getName());
             intent.putExtra("INSURANCE", vehicle.getInsuranceExpiry());
             intent.putExtra("SERVICE", vehicle.getServiceDueDate());
@@ -77,9 +80,6 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
     public Vehicle getVehicleAt(int position) {
         return vehicleList.get(position);
     }
-
-    // We removed the local removeVehicle() method because Firestore's real-time listener
-    // handles deleting elements from the UI automatically now!
 
     public static class VehicleViewHolder extends RecyclerView.ViewHolder {
         TextView textVehicleName, textInsurance, textService, textPuc, textRc;

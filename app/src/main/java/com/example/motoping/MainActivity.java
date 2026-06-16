@@ -43,6 +43,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -93,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // UPGRADED: Load Profile Picture into Header
         ImageView btnProfile = findViewById(R.id.btnProfile);
         if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getPhotoUrl() != null) {
             String highResUrl = mAuth.getCurrentUser().getPhotoUrl().toString().replace("s96-c", "s150-c");
@@ -123,7 +123,10 @@ public class MainActivity extends AppCompatActivity {
 
         setupSwipeToDelete();
         requestNotificationPermission();
-        startBackgroundEngine();
+
+        // UPGRADED: Launch the precision time calculator instead of the immediate trigger
+        setupPrecisionMorningBriefing();
+
         attachCloudListener();
     }
 
@@ -192,9 +195,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void startBackgroundEngine() {
-        PeriodicWorkRequest alertRequest = new PeriodicWorkRequest.Builder(NotificationWorker.class, 1, TimeUnit.DAYS).build();
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("MotoPingDailyCheck", ExistingPeriodicWorkPolicy.KEEP, alertRequest);
+    // --- NEW: Time Math Engine ---
+
+    private void setupPrecisionMorningBriefing() {
+        long initialDelayMs = calculateDelayUntilNineAM();
+
+        PeriodicWorkRequest alertRequest = new PeriodicWorkRequest.Builder(
+                NotificationWorker.class,
+                1,
+                TimeUnit.DAYS
+        )
+                .setInitialDelay(initialDelayMs, TimeUnit.MILLISECONDS)
+                .build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                "MotoPingDailyCheck",
+                ExistingPeriodicWorkPolicy.KEEP,
+                alertRequest
+        );
+    }
+
+    private long calculateDelayUntilNineAM() {
+        Calendar currentTime = Calendar.getInstance();
+
+        Calendar targetTime = Calendar.getInstance();
+        targetTime.set(Calendar.HOUR_OF_DAY, 9);
+        targetTime.set(Calendar.MINUTE, 0);
+        targetTime.set(Calendar.SECOND, 0);
+        targetTime.set(Calendar.MILLISECOND, 0);
+
+        // If 9:00 AM today has already passed, schedule for 9:00 AM tomorrow
+        if (currentTime.after(targetTime)) {
+            targetTime.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        return targetTime.getTimeInMillis() - currentTime.getTimeInMillis();
     }
 
     private void setupSwipeToDelete() {
