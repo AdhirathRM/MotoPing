@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "31146868185",
+    "project_id": "motoping-94ef8",
+    "storage_bucket": "motoping-94ef8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31146868185:android:b9be0f4db21465552a2dc8",
+        "android_client_info": {
+          "package_name": "com.example.motoping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31146868185-nsc6hf9cr068q7q5u0la3d4mtmshd0i9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.motoping",
+            "certificate_hash": "e51af05f99fdbc0df0db1f67395751401569354c"
+          }
+        },
+        {
+          "client_id": "31146868185-0i2nhlave2pbqt09coj97995vhj2oar5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMFVH8S0V2SQWjXACsqzQO9pcvn1uIcLQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31146868185-0i2nhlave2pbqt09coj97995vhj2oar5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

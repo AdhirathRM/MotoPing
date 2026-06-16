@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/oled_background"
-    tools:context=".EditVehicleActivity">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,111 +16,144 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="Edit Vehicle Details"
-            android:textColor="@color/text_primary"
+            android:text="EDIT VEHICLE"
+            android:textColor="@color/white"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:fontFamily="sans-serif-black"
+            android:layout_marginBottom="24dp"/>
 
-        <EditText
-            android:id="@+id/editVehicleName"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Vehicle Name (e.g., Daily Driver)"
-            android:textColorHint="@color/text_secondary"
-            android:textColor="@color/text_primary"
-            android:backgroundTint="@color/text_secondary"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/editInsurance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Insurance Expiry (DD/MM/YYYY)"
-            android:textColorHint="@color/text_secondary"
-            android:textColor="@color/text_primary"
-            android:backgroundTint="@color/text_secondary"
-            android:inputType="date" />
-
-        <EditText
-            android:id="@+id/editService"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Service Due Date (DD/MM/YYYY)"
-            android:textColorHint="@color/text_secondary"
-            android:textColor="@color/text_primary"
-            android:backgroundTint="@color/text_secondary"
-            android:inputType="date" />
-
-        <EditText
-            android:id="@+id/editPuc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="PUC Expiry (DD/MM/YYYY)"
-            android:textColorHint="@color/text_secondary"
-            android:textColor="@color/text_primary"
-            android:backgroundTint="@color/text_secondary"
-            android:inputType="date" />
-
-        <EditText
-            android:id="@+id/editRc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:hint="RC Expiry (DD/MM/YYYY)"
-            android:textColorHint="@color/text_secondary"
-            android:textColor="@color/text_primary"
-            android:backgroundTint="@color/text_secondary"
-            android:inputType="date" />
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:text="Card Accent Color"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
+            android:hint="Vehicle Name"
+            app:boxBackgroundColor="#0A0A0A"
+            app:boxStrokeColor="#FF1744"
+            app:hintTextColor="#FF1744"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editVehicleName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/spinnerVehicleType"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:background="#0A0A0A"
+            android:paddingHorizontal="16dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="Insurance Expiry Date"
+            app:boxBackgroundColor="#0A0A0A"
+            app:boxStrokeColor="#FF1744"
+            app:hintTextColor="#FF1744"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editInsurance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="Service Due Date"
+            app:boxBackgroundColor="#0A0A0A"
+            app:boxStrokeColor="#FF1744"
+            app:hintTextColor="#FF1744"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editService"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="PUC Expiry Date"
+            app:boxBackgroundColor="#0A0A0A"
+            app:boxStrokeColor="#FF1744"
+            app:hintTextColor="#FF1744"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editPuc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:hint="RC Expiry Date"
+            app:boxBackgroundColor="#0A0A0A"
+            app:boxStrokeColor="#FF1744"
+            app:hintTextColor="#FF1744"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editRc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:scrollbars="none"
-            android:clipToPadding="false"
-            android:paddingHorizontal="4dp">
-
+            android:scrollbars="none">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:paddingVertical="8dp">
-
-                <androidx.cardview.widget.CardView android:id="@+id/c1" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#EF5350" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
-                <androidx.cardview.widget.CardView android:id="@+id/c2" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#FF1744" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
-                <androidx.cardview.widget.CardView android:id="@+id/c3" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#F48FB1" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
-                <androidx.cardview.widget.CardView android:id="@+id/c4" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#7E57C2" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
-                <androidx.cardview.widget.CardView android:id="@+id/c5" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#42A5F5" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
-                <androidx.cardview.widget.CardView android:id="@+id/c6" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#00E5FF" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
-                <androidx.cardview.widget.CardView android:id="@+id/c7" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#66BB6A" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
-                <androidx.cardview.widget.CardView android:id="@+id/c8" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#FFEE58" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
-                <androidx.cardview.widget.CardView android:id="@+id/c9" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#FF9800" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
-                <androidx.cardview.widget.CardView android:id="@+id/c10" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginEnd="16dp" app:cardBackgroundColor="#FFFFFF" app:cardCornerRadius="20dp" app:cardElevation="0dp"/>
-
+                <androidx.cardview.widget.CardView android:id="@+id/c1" android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="8dp" app:cardBackgroundColor="#EF5350" app:cardCornerRadius="16dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c2" android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="8dp" app:cardBackgroundColor="#FF1744" app:cardCornerRadius="16dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c3" android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="8dp" app:cardBackgroundColor="#F48FB1" app:cardCornerRadius="16dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c4" android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="8dp" app:cardBackgroundColor="#7E57C2" app:cardCornerRadius="16dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c5" android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="8dp" app:cardBackgroundColor="#42A5F5" app:cardCornerRadius="16dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c6" android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="8dp" app:cardBackgroundColor="#00E5FF" app:cardCornerRadius="16dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c7" android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="8dp" app:cardBackgroundColor="#66BB6A" app:cardCornerRadius="16dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c8" android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="8dp" app:cardBackgroundColor="#FFEE58" app:cardCornerRadius="16dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c9" android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="8dp" app:cardBackgroundColor="#FF9800" app:cardCornerRadius="16dp"/>
+                <androidx.cardview.widget.CardView android:id="@+id/c10" android:layout_width="32dp" android:layout_height="32dp" android:layout_margin="8dp" app:cardBackgroundColor="#FFFFFF" app:cardCornerRadius="16dp"/>
             </LinearLayout>
         </HorizontalScrollView>
 
         <Button
             android:id="@+id/btnUpdateVehicle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:padding="16dp"
-            android:text="Update Vehicle"
-            android:textStyle="bold"
-            android:textColor="@color/black" />
+            android:layout_height="60dp"
+            android:text="UPDATE VEHICLE"
+            android:textColor="@color/white"
+            android:backgroundTint="#FF1744"
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="0.05" />
     </LinearLayout>
 </ScrollView>

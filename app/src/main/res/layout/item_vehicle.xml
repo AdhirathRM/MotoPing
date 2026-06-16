@@ -6,18 +6,16 @@
     android:layout_marginHorizontal="20dp"
     android:layout_marginVertical="10dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="8dp"
+    app:cardElevation="4dp"
     app:cardBackgroundColor="#161616"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground">
 
-    <!-- Outer layout to hold the accent line -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Premium Accent Bar on the Left Edge -->
         <View
             android:id="@+id/accentBar"
             android:layout_width="4dp"
@@ -27,7 +25,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <!-- Main Content Container -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -38,32 +35,53 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <!-- Top Row: Title & Edit Icon -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp">
 
-                <TextView
-                    android:id="@+id/textVehicleName"
+                <LinearLayout
+                    android:id="@+id/iconContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vehicle Name"
-                    android:textSize="22sp"
-                    android:fontFamily="sans-serif-medium"
-                    android:textColor="#FFFFFF" />
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true">
+
+                    <ImageView
+                        android:id="@+id/iconVehicleType"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/ic_car" />
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@android:drawable/ic_menu_edit"
+                        app:tint="#424242"
+                        android:contentDescription="Edit Vehicle" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textVehicleName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/iconContainer"
                     android:layout_centerVertical="true"
-                    android:src="@android:drawable/ic_menu_edit"
-                    app:tint="#424242"
-                    android:contentDescription="Edit Vehicle" />
+                    android:layout_marginEnd="16dp"
+                    android:text="VEHICLE NAME"
+                    android:textSize="20sp"
+                    android:fontFamily="sans-serif-black"
+                    android:textAllCaps="true"
+                    android:letterSpacing="0.05"
+                    android:textColor="#FFFFFF"
+                    android:maxLines="2"
+                    android:ellipsize="end" />
+
             </RelativeLayout>
 
-            <!-- Grid Row 1: Insurance & Service -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,7 +94,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -85,7 +102,6 @@
                         android:letterSpacing="0.1"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="#757575" />
-
                     <TextView
                         android:id="@+id/textInsurance"
                         android:layout_width="wrap_content"
@@ -93,7 +109,6 @@
                         android:text="12/12/2024"
                         android:layout_marginTop="4dp"
                         android:textSize="16sp"
-                        android:fontFamily="sans-serif"
                         android:textColor="#E0E0E0" />
                 </LinearLayout>
 
@@ -102,7 +117,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -111,7 +125,6 @@
                         android:letterSpacing="0.1"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="#757575" />
-
                     <TextView
                         android:id="@+id/textService"
                         android:layout_width="wrap_content"
@@ -119,12 +132,10 @@
                         android:text="12/12/2024"
                         android:layout_marginTop="4dp"
                         android:textSize="16sp"
-                        android:fontFamily="sans-serif"
                         android:textColor="#E0E0E0" />
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Grid Row 2: PUC & RC -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,7 +147,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -145,7 +155,6 @@
                         android:letterSpacing="0.1"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="#757575" />
-
                     <TextView
                         android:id="@+id/textPuc"
                         android:layout_width="wrap_content"
@@ -153,7 +162,6 @@
                         android:text="12/12/2024"
                         android:layout_marginTop="4dp"
                         android:textSize="16sp"
-                        android:fontFamily="sans-serif"
                         android:textColor="#E0E0E0" />
                 </LinearLayout>
 
@@ -162,7 +170,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -171,7 +178,6 @@
                         android:letterSpacing="0.1"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="#757575" />
-
                     <TextView
                         android:id="@+id/textRc"
                         android:layout_width="wrap_content"
@@ -179,7 +185,6 @@
                         android:text="12/12/2024"
                         android:layout_marginTop="4dp"
                         android:textSize="16sp"
-                        android:fontFamily="sans-serif"
                         android:textColor="#E0E0E0" />
                 </LinearLayout>
             </LinearLayout>

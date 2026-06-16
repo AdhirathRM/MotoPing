@@ -4,8 +4,10 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,14 +17,21 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Calendar;
 
 public class EditVehicleActivity extends AppCompatActivity {
 
     private EditText editVehicleName, editInsurance, editService, editPuc, editRc;
+    private Spinner spinnerVehicleType;
     private Button btnUpdateVehicle;
-    private DatabaseHelper dbHelper;
-    private int vehicleId;
+
+    // Cloud Variables
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private String vehicleId; // Now a String
 
     private CardView c1, c2, c3, c4, c5, c6, c7, c8, c9, c10;
     private CardView[] allColors;
@@ -43,14 +52,20 @@ public class EditVehicleActivity extends AppCompatActivity {
             });
         }
 
-        dbHelper = new DatabaseHelper(this);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         editVehicleName = findViewById(R.id.editVehicleName);
         editInsurance = findViewById(R.id.editInsurance);
         editService = findViewById(R.id.editService);
         editPuc = findViewById(R.id.editPuc);
         editRc = findViewById(R.id.editRc);
+        spinnerVehicleType = findViewById(R.id.spinnerVehicleType);
         btnUpdateVehicle = findViewById(R.id.btnUpdateVehicle);
+
+        String[] types = {"Car", "Bike", "Scooter"};
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, types);
+        spinnerVehicleType.setAdapter(typeAdapter);
 
         c1 = findViewById(R.id.c1);
         c2 = findViewById(R.id.c2);
@@ -88,12 +103,18 @@ public class EditVehicleActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            vehicleId = intent.getIntExtra("ID", -1);
+            vehicleId = intent.getStringExtra("ID"); // Fetching the String ID
             editVehicleName.setText(intent.getStringExtra("NAME"));
             editInsurance.setText(intent.getStringExtra("INSURANCE"));
             editService.setText(intent.getStringExtra("SERVICE"));
             editPuc.setText(intent.getStringExtra("PUC"));
             editRc.setText(intent.getStringExtra("RC"));
+
+            String savedType = intent.getStringExtra("TYPE");
+            if (savedType != null) {
+                int spinnerPosition = typeAdapter.getPosition(savedType);
+                spinnerVehicleType.setSelection(spinnerPosition);
+            }
 
             String savedColor = intent.getStringExtra("COLOR");
             if (savedColor != null) {
@@ -117,29 +138,33 @@ public class EditVehicleActivity extends AppCompatActivity {
             String service = editService.getText().toString().trim();
             String puc = editPuc.getText().toString().trim();
             String rc = editRc.getText().toString().trim();
+            String selectedType = spinnerVehicleType.getSelectedItem().toString();
 
-            if (name.isEmpty()) {
-                Toast.makeText(EditVehicleActivity.this, "Please enter a vehicle name", Toast.LENGTH_SHORT).show();
+            if (name.isEmpty() || mAuth.getCurrentUser() == null || vehicleId == null) {
+                Toast.makeText(EditVehicleActivity.this, "Error updating vehicle", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            dbHelper.updateVehicleWithColor(vehicleId, name, insurance, service, puc, rc, selectedColorHex);
-            Toast.makeText(EditVehicleActivity.this, "Vehicle Updated!", Toast.LENGTH_SHORT).show();
-            finish();
+            String userId = mAuth.getCurrentUser().getUid();
+            Vehicle updatedVehicle = new Vehicle(vehicleId, name, insurance, service, puc, rc, selectedColorHex, selectedType);
+
+            db.collection("users").document(userId).collection("vehicles").document(vehicleId)
+                    .set(updatedVehicle)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(EditVehicleActivity.this, "Cloud Update Successful!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(EditVehicleActivity.this, "Update Failed", Toast.LENGTH_SHORT).show());
         });
     }
 
     private void setupColorListener(CardView card, String hex) {
         card.setOnClickListener(v -> {
             selectedColorHex = hex;
-
             for (CardView c : allColors) {
-                c.setScaleX(1f);
-                c.setScaleY(1f);
+                c.setScaleX(1f); c.setScaleY(1f);
             }
-
-            card.setScaleX(1.2f);
-            card.setScaleY(1.2f);
+            card.setScaleX(1.2f); card.setScaleY(1.2f);
         });
     }
 
@@ -154,8 +179,9 @@ public class EditVehicleActivity extends AppCompatActivity {
                 (view, selectedYear, selectedMonth, selectedDay) -> {
                     String formattedDate = String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear);
                     editText.setText(formattedDate);
-                },
-                year, month, day);
+                }, year, month, day);
+
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
 }
