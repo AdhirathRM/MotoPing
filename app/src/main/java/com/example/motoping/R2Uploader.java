@@ -37,13 +37,12 @@ public class R2Uploader {
     // If you enable public access on your bucket, put the public URL here to view images later
     private static final String R2_PUBLIC_URL_PREFIX = "https://pub-37a8f87f68b24e319614f22da4a58600.r2.dev/";
 
-    public interface UploadCallback {
-        void onSuccess(String fileUrl);
+    public interface Callback {
+        void onSuccess(String url);
         void onError(String error);
     }
 
-    // UPGRADED: Now accepts a mimeType parameter
-    public static void uploadDocument(Context context, Uri fileUri, String mimeType, UploadCallback callback) {
+    public static void uploadDocument(Context context, Uri fileUri, String mimeType, Callback callback) {
         new Thread(() -> {
             try {
                 ClientConfiguration clientConfig = new ClientConfiguration();
@@ -56,7 +55,6 @@ public class R2Uploader {
                 s3Client.setEndpoint(R2_ENDPOINT);
                 s3Client.setS3ClientOptions(S3ClientOptions.builder().setPathStyleAccess(true).build());
 
-                // Set file extension based on type
                 String extension = mimeType.contains("pdf") ? ".pdf" : ".jpg";
                 File tempFile = new File(context.getCacheDir(), UUID.randomUUID().toString() + extension);
 
@@ -86,8 +84,6 @@ public class R2Uploader {
                 HttpURLConnection connection = (HttpURLConnection) presignedUrl.openConnection();
                 connection.setDoOutput(true);
                 connection.setRequestMethod("PUT");
-
-                // Set the exact content type so Cloudflare knows it is a PDF
                 connection.setRequestProperty("Content-Type", mimeType);
 
                 OutputStream out = connection.getOutputStream();
@@ -112,6 +108,49 @@ public class R2Uploader {
 
             } catch (Exception e) {
                 Log.e("R2Uploader", "Upload failed", e);
+                new Handler(Looper.getMainLooper()).post(() -> callback.onError(e.getMessage()));
+            }
+        }).start();
+    }
+
+    // NEW: Generates a self-destructing link to view locked files
+    public static void getSecureReadUrl(String storedDbUrl, Callback callback) {
+        new Thread(() -> {
+            try {
+                // Extract just the filename from the old Firebase URL
+                String objectKey;
+                if (storedDbUrl.contains("documents/")) {
+                    objectKey = storedDbUrl.substring(storedDbUrl.indexOf("documents/"));
+                } else {
+                    throw new Exception("Invalid file path");
+                }
+
+                ClientConfiguration clientConfig = new ClientConfiguration();
+                clientConfig.setSignerOverride("AWSS3V4SignerType");
+
+                AWSCredentials credentials = new BasicAWSCredentials(R2_ACCESS_KEY, R2_SECRET_KEY);
+                AmazonS3Client s3Client = new AmazonS3Client(credentials, clientConfig);
+
+                s3Client.setRegion(Region.getRegion(Regions.US_EAST_1));
+                s3Client.setEndpoint(R2_ENDPOINT);
+                s3Client.setS3ClientOptions(S3ClientOptions.builder().setPathStyleAccess(true).build());
+
+                // Create a VIP Pass that expires in exactly 60 seconds
+                Date expiration = new Date();
+                long expTimeMillis = expiration.getTime() + (1000 * 60);
+                expiration.setTime(expTimeMillis);
+
+                GeneratePresignedUrlRequest generatePresignedUrlRequest =
+                        new GeneratePresignedUrlRequest(BUCKET_NAME, objectKey)
+                                .withMethod(HttpMethod.GET)
+                                .withExpiration(expiration);
+
+                URL secureTempUrl = s3Client.generatePresignedUrl(generatePresignedUrlRequest);
+
+                new Handler(Looper.getMainLooper()).post(() -> callback.onSuccess(secureTempUrl.toString()));
+
+            } catch (Exception e) {
+                Log.e("R2Uploader", "Link generation failed", e);
                 new Handler(Looper.getMainLooper()).post(() -> callback.onError(e.getMessage()));
             }
         }).start();

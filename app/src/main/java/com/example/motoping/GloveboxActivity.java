@@ -64,7 +64,6 @@ public class GloveboxActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         vehicleId = getIntent().getStringExtra("VEHICLE_ID");
 
-        // Bind UI Elements
         btnUploadRc = findViewById(R.id.btnUploadRc);
         btnUploadInsurance = findViewById(R.id.btnUploadInsurance);
 
@@ -79,7 +78,6 @@ public class GloveboxActivity extends AppCompatActivity {
 
         loadExistingDocuments();
 
-        // Upload Listeners
         btnUploadRc.setOnClickListener(v -> {
             targetDocumentField = "rcImageUrl";
             openFilePicker();
@@ -90,7 +88,6 @@ public class GloveboxActivity extends AppCompatActivity {
             openFilePicker();
         });
 
-        // Delete Listeners
         btnDeleteRc.setOnClickListener(v -> deleteDocument("rcImageUrl"));
         btnDeleteInsurance.setOnClickListener(v -> deleteDocument("insuranceImageUrl"));
     }
@@ -105,7 +102,7 @@ public class GloveboxActivity extends AppCompatActivity {
     private void handleFileSelected(Uri fileUri) {
         Toast.makeText(this, "Uploading PDF to secure vault...", Toast.LENGTH_LONG).show();
 
-        R2Uploader.uploadDocument(this, fileUri, "application/pdf", new R2Uploader.UploadCallback() {
+        R2Uploader.uploadDocument(this, fileUri, "application/pdf", new R2Uploader.Callback() {
             @Override
             public void onSuccess(String fileUrl) {
                 if (FirebaseAuth.getInstance().getCurrentUser() != null && vehicleId != null) {
@@ -139,21 +136,19 @@ public class GloveboxActivity extends AppCompatActivity {
                         String rcUrl = documentSnapshot.getString("rcImageUrl");
                         String insuranceUrl = documentSnapshot.getString("insuranceImageUrl");
 
-                        // Toggle RC UI
                         if (rcUrl != null && !rcUrl.isEmpty()) {
                             btnUploadRc.setVisibility(View.GONE);
                             cardRcDoc.setVisibility(View.VISIBLE);
-                            textRcName.setOnClickListener(v -> viewPdf(rcUrl)); // Make text clickable
+                            textRcName.setOnClickListener(v -> viewSecurePdf(rcUrl));
                         } else {
                             btnUploadRc.setVisibility(View.VISIBLE);
                             cardRcDoc.setVisibility(View.GONE);
                         }
 
-                        // Toggle Insurance UI
                         if (insuranceUrl != null && !insuranceUrl.isEmpty()) {
                             btnUploadInsurance.setVisibility(View.GONE);
                             cardInsuranceDoc.setVisibility(View.VISIBLE);
-                            textInsuranceName.setOnClickListener(v -> viewPdf(insuranceUrl)); // Make text clickable
+                            textInsuranceName.setOnClickListener(v -> viewSecurePdf(insuranceUrl));
                         } else {
                             btnUploadInsurance.setVisibility(View.VISIBLE);
                             cardInsuranceDoc.setVisibility(View.GONE);
@@ -166,24 +161,36 @@ public class GloveboxActivity extends AppCompatActivity {
         if (FirebaseAuth.getInstance().getCurrentUser() == null || vehicleId == null) return;
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // FieldValue.delete() removes the field entirely from Firebase
         db.collection("users").document(userId).collection("vehicles").document(vehicleId)
                 .update(dbField, FieldValue.delete())
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Document removed from vault", Toast.LENGTH_SHORT).show();
-                    loadExistingDocuments(); // Reloads the UI back to the Upload buttons
+                    loadExistingDocuments();
                 });
     }
 
-    private void viewPdf(String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse(url), "application/pdf");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+    // NEW: Intercepts the click, generates a 60-second secure link, then opens it.
+    private void viewSecurePdf(String storedUrl) {
+        Toast.makeText(this, "Generating secure VIP pass...", Toast.LENGTH_SHORT).show();
 
-        try {
-            startActivity(intent);
-        } catch (Exception e) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-        }
+        R2Uploader.getSecureReadUrl(storedUrl, new R2Uploader.Callback() {
+            @Override
+            public void onSuccess(String secureTempUrl) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(secureTempUrl), "application/pdf");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                try {
+                    startActivity(intent);
+                } catch (Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(secureTempUrl)));
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(GloveboxActivity.this, "Security Error: " + error, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
