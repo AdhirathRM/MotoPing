@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
 import java.util.List;
 
 public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder> {
@@ -19,6 +20,19 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
 
     public VehicleAdapter(List<Vehicle> vehicleList) {
         this.vehicleList = vehicleList;
+    }
+
+    public Vehicle getVehicleAt(int position) {
+        return vehicleList.get(position);
+    }
+
+    public List<Vehicle> getVehicleList() {
+        return vehicleList;
+    }
+
+    public void swapItems(int fromPosition, int toPosition) {
+        Collections.swap(vehicleList, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
     }
 
     @NonNull
@@ -34,7 +48,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
 
         holder.textVehicleName.setText(vehicle.getName());
 
-        // Set raw dates into the grid. If missing, show placeholder.
+        // Restored original getters
         holder.textInsurance.setText(vehicle.getInsuranceExpiry() != null && !vehicle.getInsuranceExpiry().isEmpty() ? vehicle.getInsuranceExpiry() : "--/--/----");
         holder.textService.setText(vehicle.getServiceDueDate() != null && !vehicle.getServiceDueDate().isEmpty() ? vehicle.getServiceDueDate() : "--/--/----");
         holder.textPuc.setText(vehicle.getPucDueDate() != null && !vehicle.getPucDueDate().isEmpty() ? vehicle.getPucDueDate() : "--/--/----");
@@ -57,15 +71,14 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
             holder.iconVehicleType.setColorFilter(cardColor);
         }
 
-        // Clicking the card opens the full Digital Vault
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), VehicleDetailActivity.class);
             intent.putExtra("ID", vehicle.getId());
             intent.putExtra("NAME", vehicle.getName());
-            intent.putExtra("INSURANCE", vehicle.getInsuranceExpiry());
-            intent.putExtra("SERVICE", vehicle.getServiceDueDate());
-            intent.putExtra("PUC", vehicle.getPucDueDate());
-            intent.putExtra("RC", vehicle.getRcExpiry());
+            intent.putExtra("INSURANCE", vehicle.getInsuranceExpiry()); // Restored
+            intent.putExtra("SERVICE", vehicle.getServiceDueDate());    // Restored
+            intent.putExtra("PUC", vehicle.getPucDueDate());            // Restored
+            intent.putExtra("RC", vehicle.getRcExpiry());               // Restored
             intent.putExtra("COLOR", vehicle.getColorHex());
             intent.putExtra("TYPE", vehicle.getType());
             v.getContext().startActivity(intent);
@@ -75,10 +88,6 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
     @Override
     public int getItemCount() {
         return vehicleList.size();
-    }
-
-    public Vehicle getVehicleAt(int position) {
-        return vehicleList.get(position);
     }
 
     public static class VehicleViewHolder extends RecyclerView.ViewHolder {

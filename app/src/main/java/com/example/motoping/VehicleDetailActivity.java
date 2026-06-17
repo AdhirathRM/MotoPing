@@ -106,5 +106,13 @@ public class VehicleDetailActivity extends AppCompatActivity {
             startActivity(editIntent);
             finish();
         });
+
+        Button btnGlovebox = findViewById(R.id.btnGlovebox);
+
+        btnGlovebox.setOnClickListener(v -> {
+            Intent gloveboxIntent = new Intent(VehicleDetailActivity.this, GloveboxActivity.class);
+            gloveboxIntent.putExtra("VEHICLE_ID", vehicleId);
+            startActivity(gloveboxIntent);
+        });
     }
 }

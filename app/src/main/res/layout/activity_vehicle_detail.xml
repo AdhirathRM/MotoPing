@@ -13,7 +13,6 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Premium Vault Heading -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -139,6 +138,17 @@
                 <TextView android:id="@+id/vaultRc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="RC: --/--/----" android:textColor="@color/white" android:fontFamily="monospace"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnGlovebox"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="OPEN DIGITAL GLOVEBOX"
+            android:textColor="#161616"
+            android:backgroundTint="#FFFFFF"
+            android:fontFamily="sans-serif-black"
+            android:letterSpacing="0.05"
+            android:layout_marginBottom="12dp"/>
 
         <Button
             android:id="@+id/btnServiceHistory"

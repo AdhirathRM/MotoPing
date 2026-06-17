@@ -9,16 +9,16 @@ import java.time.temporal.ChronoUnit;
 public class Vehicle {
     private String id;
     private String name;
-    private String insuranceExpiry;
-    private String serviceDueDate;
-    private String pucDueDate;
-    private String rcExpiry;
+    private String insuranceExpiry; // Restored original name
+    private String serviceDueDate;  // Restored original name
+    private String pucDueDate;      // Restored original name
+    private String rcExpiry;        // Restored original name
     private String colorHex;
     private String type;
     private long orderIndex;
 
-    // Required empty public constructor for Firebase
     public Vehicle() {
+        // Required empty constructor for Firestore
     }
 
     public Vehicle(String id, String name, String insuranceExpiry, String serviceDueDate, String pucDueDate, String rcExpiry, String colorHex, String type) {
@@ -30,6 +30,7 @@ public class Vehicle {
         this.rcExpiry = rcExpiry;
         this.colorHex = colorHex;
         this.type = type;
+        this.orderIndex = System.currentTimeMillis();
     }
 
     public String getId() { return id; }
@@ -48,13 +49,12 @@ public class Vehicle {
     public void setColorHex(String colorHex) { this.colorHex = colorHex; }
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
-
-    // --- NEW: Dynamic Compliance Engine ---
+    public long getOrderIndex() { return orderIndex; }
+    public void setOrderIndex(long orderIndex) { this.orderIndex = orderIndex; }
 
     @Exclude
     public int calculateHealthScore() {
         int score = 0;
-        // 4 categories, 25 points each = 100 max score
         score += evaluateDate(insuranceExpiry);
         score += evaluateDate(serviceDueDate);
         score += evaluateDate(pucDueDate);
@@ -64,7 +64,7 @@ public class Vehicle {
 
     @Exclude
     private int evaluateDate(String dateStr) {
-        if (dateStr == null || dateStr.isEmpty()) return 0; // Missing data = 0 health
+        if (dateStr == null || dateStr.isEmpty()) return 0;
 
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -72,14 +72,12 @@ public class Vehicle {
             LocalDate today = LocalDate.now();
             long daysLeft = ChronoUnit.DAYS.between(today, expiry);
 
-            if (daysLeft >= 30) return 25; // Perfect Health (More than a month left)
-            if (daysLeft >= 15) return 15; // Warning (Less than a month left)
-            if (daysLeft > 0) return 5;    // Critical (Expires in days)
-            return 0;                      // Expired
+            if (daysLeft >= 30) return 25;
+            if (daysLeft >= 15) return 15;
+            if (daysLeft > 0) return 5;
+            return 0;
         } catch (Exception e) {
-            return 0; // If date parsing fails, award no points
+            return 0;
         }
     }
-    public long getOrderIndex() { return orderIndex; }
-    public void setOrderIndex(long orderIndex) { this.orderIndex = orderIndex; }
 }

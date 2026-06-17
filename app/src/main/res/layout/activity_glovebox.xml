@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/oled_background"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="32dp">
+
+        <View
+            android:layout_width="6dp"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DIGITAL GLOVEBOX"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:fontFamily="sans-serif-black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SECURE DOCUMENT STORAGE"
+                android:textColor="#7A7A7A"
+                android:textSize="10sp"
+                android:fontFamily="sans-serif-black"
+                android:letterSpacing="0.1"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="REGISTRATION CERTIFICATE (RC)"
+        android:textColor="#7A7A7A"
+        android:textSize="10sp"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/btnUploadRc"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="UPLOAD RC PDF"
+        android:textColor="@color/white"
+        android:backgroundTint="#242424"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginBottom="32dp"/>
+
+    <LinearLayout
+        android:id="@+id/cardRcDoc"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#161616"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="32dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_agenda"
+            android:tint="#00E676" />
+
+        <TextView
+            android:id="@+id/textRcName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:text="RC_Document.pdf"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-black" />
+
+        <ImageButton
+            android:id="@+id/btnDeleteRc"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_delete"
+            android:tint="#FF1744" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="INSURANCE POLICY"
+        android:textColor="#7A7A7A"
+        android:textSize="10sp"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/btnUploadInsurance"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="UPLOAD INSURANCE PDF"
+        android:textColor="@color/white"
+        android:backgroundTint="#242424"
+        android:fontFamily="sans-serif-black"
+        android:layout_marginBottom="32dp"/>
+
+    <LinearLayout
+        android:id="@+id/cardInsuranceDoc"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#161616"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="32dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_agenda"
+            android:tint="#00E676" />
+
+        <TextView
+            android:id="@+id/textInsuranceName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:text="Insurance_Policy.pdf"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-black" />
+
+        <ImageButton
+            android:id="@+id/btnDeleteInsurance"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_delete"
+            android:tint="#FF1744" />
+    </LinearLayout>
+
+</LinearLayout>

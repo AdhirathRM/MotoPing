@@ -41,6 +41,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -123,10 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupSwipeToDelete();
         requestNotificationPermission();
-
-        // UPGRADED: Launch the precision time calculator instead of the immediate trigger
         setupPrecisionMorningBriefing();
-
         attachCloudListener();
     }
 
@@ -149,6 +147,10 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     }
+
+                    // Sort locally by the new orderIndex before displaying
+                    masterCloudList.sort((v1, v2) -> Long.compare(v1.getOrderIndex(), v2.getOrderIndex()));
+
                     applyFiltersToRecyclerView();
                 });
     }
@@ -195,8 +197,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // --- NEW: Time Math Engine ---
-
     private void setupPrecisionMorningBriefing() {
         long initialDelayMs = calculateDelayUntilNineAM();
 
@@ -224,7 +224,6 @@ public class MainActivity extends AppCompatActivity {
         targetTime.set(Calendar.SECOND, 0);
         targetTime.set(Calendar.MILLISECOND, 0);
 
-        // If 9:00 AM today has already passed, schedule for 9:00 AM tomorrow
         if (currentTime.after(targetTime)) {
             targetTime.add(Calendar.DAY_OF_MONTH, 1);
         }
@@ -232,11 +231,38 @@ public class MainActivity extends AppCompatActivity {
         return targetTime.getTimeInMillis() - currentTime.getTimeInMillis();
     }
 
+    // DRAG AND DROP & SWIPE LOGIC
     private void setupSwipeToDelete() {
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP | ItemTouchHelper.DOWN, // Drag enabled
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT // Swipe enabled
+        ) {
+            boolean isDragged = false;
+
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
+                // Prevent rearranging if search or filters are active to prevent cloud order corruption
+                if (!currentFilterType.equals("ALL") || !currentSearchQuery.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Clear search and filters to reorganize", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
+                int fromPos = viewHolder.getAdapterPosition();
+                int toPos = target.getAdapterPosition();
+
+                adapter.swapItems(fromPos, toPos);
+                isDragged = true;
+                return true;
+            }
+
+            @Override
+            public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+                // When card is dropped, save the new list order to Firestore instantly
+                if (isDragged) {
+                    saveNewOrderToCloud();
+                    isDragged = false;
+                }
             }
 
             @Override
@@ -265,39 +291,64 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                View itemView = viewHolder.itemView;
-                Paint paint = new Paint();
-                paint.setColor(Color.parseColor("#FF1744"));
-                paint.setAntiAlias(true);
-                float radius = 16 * itemView.getContext().getResources().getDisplayMetrics().density;
-                Drawable deleteIcon = ContextCompat.getDrawable(MainActivity.this, android.R.drawable.ic_menu_delete);
+                // Only draw the red background if SWIPING, not when dragging up/down
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                    View itemView = viewHolder.itemView;
+                    Paint paint = new Paint();
+                    paint.setColor(Color.parseColor("#FF1744"));
+                    paint.setAntiAlias(true);
+                    float radius = 16 * itemView.getContext().getResources().getDisplayMetrics().density;
+                    Drawable deleteIcon = ContextCompat.getDrawable(MainActivity.this, android.R.drawable.ic_menu_delete);
 
-                if (deleteIcon != null) {
-                    deleteIcon.setTint(Color.WHITE);
-                    int iconMargin = (itemView.getHeight() - deleteIcon.getIntrinsicHeight()) / 2;
-                    int iconTop = itemView.getTop() + (itemView.getHeight() - deleteIcon.getIntrinsicHeight()) / 2;
-                    int iconBottom = iconTop + deleteIcon.getIntrinsicHeight();
+                    if (deleteIcon != null) {
+                        deleteIcon.setTint(Color.WHITE);
+                        int iconMargin = (itemView.getHeight() - deleteIcon.getIntrinsicHeight()) / 2;
+                        int iconTop = itemView.getTop() + (itemView.getHeight() - deleteIcon.getIntrinsicHeight()) / 2;
+                        int iconBottom = iconTop + deleteIcon.getIntrinsicHeight();
 
-                    c.save();
-                    if (dX > 0) {
-                        c.clipRect(itemView.getLeft(), itemView.getTop(), itemView.getLeft() + dX, itemView.getBottom());
-                        c.drawRoundRect(new RectF(itemView.getLeft(), itemView.getTop(), itemView.getRight(), itemView.getBottom()), radius, radius, paint);
-                        int iconLeft = itemView.getLeft() + iconMargin;
-                        int iconRight = itemView.getLeft() + iconMargin + deleteIcon.getIntrinsicWidth();
-                        deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-                        deleteIcon.draw(c);
-                    } else if (dX < 0) {
-                        c.clipRect(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
-                        c.drawRoundRect(new RectF(itemView.getLeft(), itemView.getTop(), itemView.getRight(), itemView.getBottom()), radius, radius, paint);
-                        int iconLeft = itemView.getRight() - iconMargin - deleteIcon.getIntrinsicWidth();
-                        int iconRight = itemView.getRight() - iconMargin;
-                        deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
-                        deleteIcon.draw(c);
+                        c.save();
+                        if (dX > 0) {
+                            c.clipRect(itemView.getLeft(), itemView.getTop(), itemView.getLeft() + dX, itemView.getBottom());
+                            c.drawRoundRect(new RectF(itemView.getLeft(), itemView.getTop(), itemView.getRight(), itemView.getBottom()), radius, radius, paint);
+                            int iconLeft = itemView.getLeft() + iconMargin;
+                            int iconRight = itemView.getLeft() + iconMargin + deleteIcon.getIntrinsicWidth();
+                            deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                            deleteIcon.draw(c);
+                        } else if (dX < 0) {
+                            c.clipRect(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+                            c.drawRoundRect(new RectF(itemView.getLeft(), itemView.getTop(), itemView.getRight(), itemView.getBottom()), radius, radius, paint);
+                            int iconLeft = itemView.getRight() - iconMargin - deleteIcon.getIntrinsicWidth();
+                            int iconRight = itemView.getRight() - iconMargin;
+                            deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                            deleteIcon.draw(c);
+                        }
+                        c.restore();
                     }
-                    c.restore();
+                } else {
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                 }
             }
         }).attachToRecyclerView(vehicleRecyclerView);
+    }
+
+    private void saveNewOrderToCloud() {
+        if (mAuth.getCurrentUser() == null) return;
+        String userId = mAuth.getCurrentUser().getUid();
+
+        WriteBatch batch = db.batch();
+        List<Vehicle> currentVisibleList = adapter.getVehicleList();
+
+        for (int i = 0; i < currentVisibleList.size(); i++) {
+            Vehicle v = currentVisibleList.get(i);
+            v.setOrderIndex(i); // Update object index
+
+            // Queue Firestore update
+            batch.update(db.collection("users").document(userId)
+                    .collection("vehicles").document(v.getId()), "orderIndex", i);
+        }
+
+        // Commit all index updates to the cloud at exactly the same time
+        batch.commit().addOnFailureListener(e -> Log.e("Firestore", "Failed to save new order"));
     }
 }

@@ -62,4 +62,7 @@ dependencies {
     // Firebase Storage for the Digital Glovebox
     implementation("com.google.firebase:firebase-storage")
 
+    // AWS S3 SDK for the Cloudflare R2 Hack
+    implementation("com.amazonaws:aws-android-sdk-s3:2.35.0")
+
 }
