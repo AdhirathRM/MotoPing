@@ -24,10 +24,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class GloveboxActivity extends AppCompatActivity {
 
-    private Button btnUploadRc, btnUploadInsurance;
-    private LinearLayout cardRcDoc, cardInsuranceDoc;
-    private TextView textRcName, textInsuranceName;
-    private ImageButton btnDeleteRc, btnDeleteInsurance;
+    private Button btnUpload1, btnUpload2, btnUpload3, btnUpload4, btnUpload5;
+    private LinearLayout cardDoc1, cardDoc2, cardDoc3, cardDoc4, cardDoc5;
+    private TextView textDoc1, textDoc2, textDoc3, textDoc4, textDoc5;
+    private ImageButton btnDelete1, btnDelete2, btnDelete3, btnDelete4, btnDelete5;
 
     private String vehicleId;
     private String targetDocumentField;
@@ -64,32 +64,46 @@ public class GloveboxActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         vehicleId = getIntent().getStringExtra("VEHICLE_ID");
 
-        btnUploadRc = findViewById(R.id.btnUploadRc);
-        btnUploadInsurance = findViewById(R.id.btnUploadInsurance);
+        // Bind UI Elements
+        btnUpload1 = findViewById(R.id.btnUpload1);
+        btnUpload2 = findViewById(R.id.btnUpload2);
+        btnUpload3 = findViewById(R.id.btnUpload3);
+        btnUpload4 = findViewById(R.id.btnUpload4);
+        btnUpload5 = findViewById(R.id.btnUpload5);
 
-        cardRcDoc = findViewById(R.id.cardRcDoc);
-        cardInsuranceDoc = findViewById(R.id.cardInsuranceDoc);
+        cardDoc1 = findViewById(R.id.cardDoc1);
+        cardDoc2 = findViewById(R.id.cardDoc2);
+        cardDoc3 = findViewById(R.id.cardDoc3);
+        cardDoc4 = findViewById(R.id.cardDoc4);
+        cardDoc5 = findViewById(R.id.cardDoc5);
 
-        textRcName = findViewById(R.id.textRcName);
-        textInsuranceName = findViewById(R.id.textInsuranceName);
+        textDoc1 = findViewById(R.id.textDoc1);
+        textDoc2 = findViewById(R.id.textDoc2);
+        textDoc3 = findViewById(R.id.textDoc3);
+        textDoc4 = findViewById(R.id.textDoc4);
+        textDoc5 = findViewById(R.id.textDoc5);
 
-        btnDeleteRc = findViewById(R.id.btnDeleteRc);
-        btnDeleteInsurance = findViewById(R.id.btnDeleteInsurance);
+        btnDelete1 = findViewById(R.id.btnDelete1);
+        btnDelete2 = findViewById(R.id.btnDelete2);
+        btnDelete3 = findViewById(R.id.btnDelete3);
+        btnDelete4 = findViewById(R.id.btnDelete4);
+        btnDelete5 = findViewById(R.id.btnDelete5);
 
         loadExistingDocuments();
 
-        btnUploadRc.setOnClickListener(v -> {
-            targetDocumentField = "rcImageUrl";
-            openFilePicker();
-        });
+        // Upload Listeners (Preserving old RC/Insurance field names for backward compatibility)
+        btnUpload1.setOnClickListener(v -> { targetDocumentField = "rcImageUrl"; openFilePicker(); });
+        btnUpload2.setOnClickListener(v -> { targetDocumentField = "insuranceImageUrl"; openFilePicker(); });
+        btnUpload3.setOnClickListener(v -> { targetDocumentField = "doc3Url"; openFilePicker(); });
+        btnUpload4.setOnClickListener(v -> { targetDocumentField = "doc4Url"; openFilePicker(); });
+        btnUpload5.setOnClickListener(v -> { targetDocumentField = "doc5Url"; openFilePicker(); });
 
-        btnUploadInsurance.setOnClickListener(v -> {
-            targetDocumentField = "insuranceImageUrl";
-            openFilePicker();
-        });
-
-        btnDeleteRc.setOnClickListener(v -> deleteDocument("rcImageUrl"));
-        btnDeleteInsurance.setOnClickListener(v -> deleteDocument("insuranceImageUrl"));
+        // Delete Listeners
+        btnDelete1.setOnClickListener(v -> deleteDocument("rcImageUrl"));
+        btnDelete2.setOnClickListener(v -> deleteDocument("insuranceImageUrl"));
+        btnDelete3.setOnClickListener(v -> deleteDocument("doc3Url"));
+        btnDelete4.setOnClickListener(v -> deleteDocument("doc4Url"));
+        btnDelete5.setOnClickListener(v -> deleteDocument("doc5Url"));
     }
 
     private void openFilePicker() {
@@ -133,28 +147,24 @@ public class GloveboxActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        String rcUrl = documentSnapshot.getString("rcImageUrl");
-                        String insuranceUrl = documentSnapshot.getString("insuranceImageUrl");
-
-                        if (rcUrl != null && !rcUrl.isEmpty()) {
-                            btnUploadRc.setVisibility(View.GONE);
-                            cardRcDoc.setVisibility(View.VISIBLE);
-                            textRcName.setOnClickListener(v -> viewSecurePdf(rcUrl));
-                        } else {
-                            btnUploadRc.setVisibility(View.VISIBLE);
-                            cardRcDoc.setVisibility(View.GONE);
-                        }
-
-                        if (insuranceUrl != null && !insuranceUrl.isEmpty()) {
-                            btnUploadInsurance.setVisibility(View.GONE);
-                            cardInsuranceDoc.setVisibility(View.VISIBLE);
-                            textInsuranceName.setOnClickListener(v -> viewSecurePdf(insuranceUrl));
-                        } else {
-                            btnUploadInsurance.setVisibility(View.VISIBLE);
-                            cardInsuranceDoc.setVisibility(View.GONE);
-                        }
+                        toggleSlot(documentSnapshot.getString("rcImageUrl"), btnUpload1, cardDoc1, textDoc1);
+                        toggleSlot(documentSnapshot.getString("insuranceImageUrl"), btnUpload2, cardDoc2, textDoc2);
+                        toggleSlot(documentSnapshot.getString("doc3Url"), btnUpload3, cardDoc3, textDoc3);
+                        toggleSlot(documentSnapshot.getString("doc4Url"), btnUpload4, cardDoc4, textDoc4);
+                        toggleSlot(documentSnapshot.getString("doc5Url"), btnUpload5, cardDoc5, textDoc5);
                     }
                 });
+    }
+
+    private void toggleSlot(String url, Button uploadBtn, LinearLayout card, TextView titleText) {
+        if (url != null && !url.isEmpty()) {
+            uploadBtn.setVisibility(View.GONE);
+            card.setVisibility(View.VISIBLE);
+            titleText.setOnClickListener(v -> viewSecurePdf(url));
+        } else {
+            uploadBtn.setVisibility(View.VISIBLE);
+            card.setVisibility(View.GONE);
+        }
     }
 
     private void deleteDocument(String dbField) {
@@ -164,12 +174,11 @@ public class GloveboxActivity extends AppCompatActivity {
         db.collection("users").document(userId).collection("vehicles").document(vehicleId)
                 .update(dbField, FieldValue.delete())
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Document removed from vault", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Document removed", Toast.LENGTH_SHORT).show();
                     loadExistingDocuments();
                 });
     }
 
-    // NEW: Intercepts the click, generates a 60-second secure link, then opens it.
     private void viewSecurePdf(String storedUrl) {
         Toast.makeText(this, "Generating secure VIP pass...", Toast.LENGTH_SHORT).show();
 

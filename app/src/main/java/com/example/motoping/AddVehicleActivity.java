@@ -1,12 +1,13 @@
 package com.example.motoping;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -24,7 +25,7 @@ import java.util.Calendar;
 public class AddVehicleActivity extends AppCompatActivity {
 
     private EditText editVehicleName, editInsurance, editService, editPuc, editRc;
-    private Spinner spinnerVehicleType;
+    private AutoCompleteTextView spinnerVehicleType;
     private Button btnSaveVehicle;
 
     // Cloud Variables
@@ -50,7 +51,6 @@ public class AddVehicleActivity extends AppCompatActivity {
             });
         }
 
-        // Initialize Firebase
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
@@ -108,20 +108,16 @@ public class AddVehicleActivity extends AppCompatActivity {
             String service = editService.getText().toString().trim();
             String puc = editPuc.getText().toString().trim();
             String rc = editRc.getText().toString().trim();
-            String selectedType = spinnerVehicleType.getSelectedItem().toString();
+            String selectedType = spinnerVehicleType.getText().toString();
 
-            if (name.isEmpty() || mAuth.getCurrentUser() == null) {
-                Toast.makeText(AddVehicleActivity.this, "Please enter a name / Verify Login", Toast.LENGTH_SHORT).show();
+            if (name.isEmpty() || mAuth.getCurrentUser() == null || selectedType.isEmpty()) {
+                Toast.makeText(AddVehicleActivity.this, "Please enter a name and select a type", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // 1. Get the current user's ID
             String userId = mAuth.getCurrentUser().getUid();
-
-            // 2. Generate a random secure ID for the new vehicle document
             String newVehicleId = db.collection("users").document(userId).collection("vehicles").document().getId();
 
-            // 3. Create the object and push to Firestore
             Vehicle newVehicle = new Vehicle(newVehicleId, name, insurance, service, puc, rc, selectedColorHex, selectedType);
 
             db.collection("users").document(userId).collection("vehicles").document(newVehicleId)
@@ -158,6 +154,12 @@ public class AddVehicleActivity extends AppCompatActivity {
                 }, year, month, day);
 
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+        // NEW: Injects a "CLEAR" button directly into the calendar popup
+        datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "CLEAR", (dialog, which) -> {
+            editText.setText("");
+        });
+
         datePickerDialog.show();
     }
 }

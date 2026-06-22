@@ -1,13 +1,14 @@
 package com.example.motoping;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -25,13 +26,13 @@ import java.util.Calendar;
 public class EditVehicleActivity extends AppCompatActivity {
 
     private EditText editVehicleName, editInsurance, editService, editPuc, editRc;
-    private Spinner spinnerVehicleType;
+    private AutoCompleteTextView spinnerVehicleType;
     private Button btnUpdateVehicle;
 
     // Cloud Variables
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
-    private String vehicleId; // Now a String
+    private String vehicleId;
 
     private CardView c1, c2, c3, c4, c5, c6, c7, c8, c9, c10;
     private CardView[] allColors;
@@ -103,7 +104,7 @@ public class EditVehicleActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            vehicleId = intent.getStringExtra("ID"); // Fetching the String ID
+            vehicleId = intent.getStringExtra("ID");
             editVehicleName.setText(intent.getStringExtra("NAME"));
             editInsurance.setText(intent.getStringExtra("INSURANCE"));
             editService.setText(intent.getStringExtra("SERVICE"));
@@ -112,8 +113,7 @@ public class EditVehicleActivity extends AppCompatActivity {
 
             String savedType = intent.getStringExtra("TYPE");
             if (savedType != null) {
-                int spinnerPosition = typeAdapter.getPosition(savedType);
-                spinnerVehicleType.setSelection(spinnerPosition);
+                spinnerVehicleType.setText(savedType, false);
             }
 
             String savedColor = intent.getStringExtra("COLOR");
@@ -138,7 +138,7 @@ public class EditVehicleActivity extends AppCompatActivity {
             String service = editService.getText().toString().trim();
             String puc = editPuc.getText().toString().trim();
             String rc = editRc.getText().toString().trim();
-            String selectedType = spinnerVehicleType.getSelectedItem().toString();
+            String selectedType = spinnerVehicleType.getText().toString();
 
             if (name.isEmpty() || mAuth.getCurrentUser() == null || vehicleId == null) {
                 Toast.makeText(EditVehicleActivity.this, "Error updating vehicle", Toast.LENGTH_SHORT).show();
@@ -146,10 +146,17 @@ public class EditVehicleActivity extends AppCompatActivity {
             }
 
             String userId = mAuth.getCurrentUser().getUid();
-            Vehicle updatedVehicle = new Vehicle(vehicleId, name, insurance, service, puc, rc, selectedColorHex, selectedType);
 
             db.collection("users").document(userId).collection("vehicles").document(vehicleId)
-                    .set(updatedVehicle)
+                    .update(
+                            "name", name,
+                            "insuranceExpiry", insurance,
+                            "serviceDueDate", service,
+                            "pucDueDate", puc,
+                            "rcExpiry", rc,
+                            "colorHex", selectedColorHex,
+                            "type", selectedType
+                    )
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(EditVehicleActivity.this, "Cloud Update Successful!", Toast.LENGTH_SHORT).show();
                         finish();
@@ -182,6 +189,12 @@ public class EditVehicleActivity extends AppCompatActivity {
                 }, year, month, day);
 
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+        // NEW: Injects a "CLEAR" button directly into the calendar popup
+        datePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "CLEAR", (dialog, which) -> {
+            editText.setText("");
+        });
+
         datePickerDialog.show();
     }
 }

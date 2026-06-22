@@ -9,18 +9,26 @@ import java.time.temporal.ChronoUnit;
 public class Vehicle {
     private String id;
     private String name;
-    private String insuranceExpiry; // Restored original name
-    private String serviceDueDate;  // Restored original name
-    private String pucDueDate;      // Restored original name
-    private String rcExpiry;        // Restored original name
+    private String insuranceExpiry;
+    private String serviceDueDate;
+    private String pucDueDate;
+    private String rcExpiry;
     private String colorHex;
     private String type;
     private long orderIndex;
+
+    // NEW: Added the 5 Document URLs for the Glovebox feature
+    private String rcImageUrl;
+    private String insuranceImageUrl;
+    private String doc3Url;
+    private String doc4Url;
+    private String doc5Url;
 
     public Vehicle() {
         // Required empty constructor for Firestore
     }
 
+    // Constructor remains the same so we don't break your other code
     public Vehicle(String id, String name, String insuranceExpiry, String serviceDueDate, String pucDueDate, String rcExpiry, String colorHex, String type) {
         this.id = id;
         this.name = name;
@@ -51,6 +59,18 @@ public class Vehicle {
     public void setType(String type) { this.type = type; }
     public long getOrderIndex() { return orderIndex; }
     public void setOrderIndex(long orderIndex) { this.orderIndex = orderIndex; }
+
+    // NEW: Getters and Setters for the 5 Documents
+    public String getRcImageUrl() { return rcImageUrl; }
+    public void setRcImageUrl(String rcImageUrl) { this.rcImageUrl = rcImageUrl; }
+    public String getInsuranceImageUrl() { return insuranceImageUrl; }
+    public void setInsuranceImageUrl(String insuranceImageUrl) { this.insuranceImageUrl = insuranceImageUrl; }
+    public String getDoc3Url() { return doc3Url; }
+    public void setDoc3Url(String doc3Url) { this.doc3Url = doc3Url; }
+    public String getDoc4Url() { return doc4Url; }
+    public void setDoc4Url(String doc4Url) { this.doc4Url = doc4Url; }
+    public String getDoc5Url() { return doc5Url; }
+    public void setDoc5Url(String doc5Url) { this.doc5Url = doc5Url; }
 
     @Exclude
     public int calculateHealthScore() {
